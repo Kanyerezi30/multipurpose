@@ -2,7 +2,8 @@
 
 # A function that performs fastqc given a file containing path of the reads
 quality(){
-	cat $1 | parallel fastqc
+	grep FASTQC config | cut -f2 -d":" | xargs -I%   bash -c 'ls %/*gz' | parallel fastqc
+	grep MULTIQC config  | cut -f2 -d":" | xargs -I% multiqc %
 }
 
-quality $@
+quality
